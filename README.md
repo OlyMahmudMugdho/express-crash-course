@@ -1,2 +1,2 @@
 # express-crash-course
-codes of express.js crash course
+## basic REST API and template rendering using Express.js
