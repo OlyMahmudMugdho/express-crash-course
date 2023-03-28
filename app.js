@@ -30,10 +30,10 @@ app.post('/api/users', (req, res) => {
     res.json(users);
 })
 
-app.put('/api/users', (req, res) => {
+app.put('/api/users/:id', (req, res) => {
     users.map(
         (user) => {
-            if (user.id === 11) {
+            if (user.id === parseInt(req.params.id)) {
                 user.friend = 'Mugdho Mahmud';
             }
         }
@@ -41,6 +41,18 @@ app.put('/api/users', (req, res) => {
     res.json({ message: "Updated", users });
 
 })
+app.delete('/api/users/:id', (req, res) => {
 
+    const cpUsers = users.filter(
+        (user) =>
+            user.id !== parseInt(req.params.id)
+    )
+    res.json(cpUsers);
+})
+
+const nums = [1, 87, 6, 23, 7];
+console.log(nums.filter(
+    (num) => num > 10
+))
 
 app.listen(5000);
