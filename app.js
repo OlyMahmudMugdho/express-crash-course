@@ -1,13 +1,28 @@
 const express = require('express');
 const path = require('path');
-const app = express();
+
 const users = require('./api/users');
 const moment = require('moment');
+const { engine } = require('express-handlebars');
 
 
 /* app.get('/', (req,res) => {
     res.sendFile(path.join(__dirname,'public/index.html'));
 }); */
+
+const app = express();
+
+app.engine('.hbs', engine({ extname : '.hbs' }));
+app.set('view engine','.hbs');
+app.set('views','./views');
+
+
+app.get('/', (req, res) => {
+    res.render('index',{
+        title : "Mugdho"
+    })
+})
+
 
 const logger = (req, res, next) => {
     console.log(`${req.protocol}://${req.hostname}:500${req.url}  ${moment().format('MMMM Do YYYY, h:mm:ss a')}`);
@@ -50,9 +65,6 @@ app.delete('/api/users/:id', (req, res) => {
     res.json(cpUsers);
 })
 
-const nums = [1, 87, 6, 23, 7];
-console.log(nums.filter(
-    (num) => num > 10
-))
+
 
 app.listen(5000);
