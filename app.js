@@ -1,9 +1,11 @@
 const express = require('express');
+const router = express.Router();
 const path = require('path');
-
+const uuid = require('uuid');
 const users = require('./api/users');
 const moment = require('moment');
 const { engine } = require('express-handlebars');
+const { request } = require('http');
 
 
 /* app.get('/', (req,res) => {
@@ -17,32 +19,35 @@ app.set('view engine','.hbs');
 app.set('views','./views');
 
 
-app.get('/', (req, res) => {
-    res.render('index',{
-        title : "Mugdho"
-    })
-})
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 const logger = (req, res, next) => {
     console.log(`${req.protocol}://${req.hostname}:500${req.url}  ${moment().format('MMMM Do YYYY, h:mm:ss a')}`);
     next();
 }
 app.use(logger);
-app.use(express.static(path.join(__dirname, 'public')));
+app.get('/', (req, res) => {
+    res.render('index',{
+        title : "Users",
+        users
+    })
+})
+
 
 app.get('/api/users', (req, res) => {
     res.json(users);
 })
 
-const new_user = {
-    id: 11,
-    name: "Mila",
-    friend: "Mugdho M"
-}
+
 app.post('/api/users', (req, res) => {
-    users.push(new_user);
+    const newMember = {
+        id: uuid.v4(),
+        ...req.body
+    };
+    users.push(newMember);
     res.json(users);
+    // return res.redirect('/'); // this line works for template rendering 
 })
 
 app.put('/api/users/:id', (req, res) => {

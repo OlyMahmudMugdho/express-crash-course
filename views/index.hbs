@@ -1,3 +1,21 @@
+<div class="title">
+    <h1>
+        {{ title }}
+    </h1>
+</div>
 <div>
-    {{ title }}
+    <ul>
+        {{#each users }}
+        <li>{{ this.name }}</li>
+        {{/each }}
+    </ul>
+</div>
+<div>
+    <form action="/api/users" method="POST">
+        <label for="name">Name</label>
+        <input name="name" type="text">
+        <label for="interest">Interest</label>
+        <input type="text" name="interest">
+        <input type="submit" value="Send">
+    </form>
 </div>
